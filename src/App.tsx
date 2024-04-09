@@ -20,9 +20,10 @@ function App() {
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (storedTasks) {
-      setTask(storedTasks);
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks !== null) {
+      const parsedTasks = JSON.parse(storedTasks);
+      setTask(parsedTasks);
     }
   }, []);
 
@@ -32,10 +33,12 @@ function App() {
       setTask(updatedTasks);
       setTaskInput("");
       localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    } else {
+      alert("Add task");
     }
   };
 
-  const handleUpdateTask = (index: number) => {
+  const handleUpdateTask = (index) => {
     if (taskInput.trim() !== "") {
       const updatedTasks = [...task];
       updatedTasks[index] = taskInput;
@@ -68,8 +71,9 @@ function App() {
             ) : (
               <>
                 <Input
-                  placeholder="Type your task"
+                  placeholder="Add your task here"
                   value={taskInput}
+                  id="addTask"
                   onChange={(e) => setTaskInput(e.target.value)}
                   border="1px"
                 />
@@ -80,8 +84,8 @@ function App() {
             )}
           </Box>
 
-          <Box pt="10px">
-            <Table variant="striped" colorScheme="teal" border="2px solid ">
+          <Box pt="15px">
+            <Table variant="striped" colorScheme="teal" border="2px solid">
               <Thead>
                 <Tr>
                   <Th>Tasks to do:</Th>
